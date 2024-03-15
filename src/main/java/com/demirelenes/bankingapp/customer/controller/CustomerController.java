@@ -8,6 +8,7 @@ import com.demirelenes.bankingapp.customer.service.ICustomerService;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -29,6 +30,15 @@ public class CustomerController {
         Customer customerEntity = mapper.map(newCustomer, Customer.class);
         Customer createdCustomer = customerService.createCustomer(customerEntity);
         return mapper.map(createdCustomer, CustomerResponseDTO.class);
+    }
+
+    @GetMapping
+    public List<CustomerResponseDTO> getAllCustomers() {
+        List<Customer> customers = customerService.getAllCustomers();
+        return customers
+                .stream()
+                .map(customer -> mapper.map(customer, CustomerResponseDTO.class))
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")

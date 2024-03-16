@@ -5,10 +5,14 @@ import com.demirelenes.bankingapp.account.repository.AccountRepository;
 import com.demirelenes.bankingapp.customer.entity.Customer;
 import com.demirelenes.bankingapp.customer.service.ICustomerService;
 import com.demirelenes.bankingapp.transaction.entity.Transaction;
+import com.demirelenes.bankingapp.transaction.entity.Transfer;
+import com.demirelenes.bankingapp.transaction.repository.TransferRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AccountService implements IAccountService {
@@ -17,9 +21,12 @@ public class AccountService implements IAccountService {
 
     private final ICustomerService customerService;
 
-    public AccountService(AccountRepository accountRepository, ICustomerService customerService) {
+    private final TransferRepository transferRepository;
+
+    public AccountService(AccountRepository accountRepository, ICustomerService customerService, TransferRepository transferRepository) {
         this.accountRepository = accountRepository;
         this.customerService = customerService;
+        this.transferRepository = transferRepository;
     }
 
     @Override
@@ -42,7 +49,12 @@ public class AccountService implements IAccountService {
 
     @Override
     public List<Transaction> getTransactionsOfAccount(Long id) {
-        return getAccountById(id).getTransactions();
+        List<Transfer> transfersAsDestinationAccount = transferRepository.findByDestinationAccount_Id(id);
+        List<Transaction> transactions = getAccountById(id).getTransactions();
+        transactions.addAll(transfersAsDestinationAccount);
+        return transactions.stream()
+                .sorted(Comparator.comparing(Transaction::getDateTime))
+                .collect(Collectors.toList());
     }
 
     @Override

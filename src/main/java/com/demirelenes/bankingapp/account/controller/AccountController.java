@@ -28,7 +28,7 @@ public class AccountController {
     @PostMapping
     public AccountResponseDTO createAccount(@RequestBody AccountRequestDTO newAccount) {
         Account accountEntity = mapper.map(newAccount, Account.class);
-        Account createdAccount = accountService.createAccount(accountEntity);
+        Account createdAccount = accountService.createAccount(accountEntity, newAccount.getCustomerId());
         return mapper.map(createdAccount, AccountResponseDTO.class);
     }
 

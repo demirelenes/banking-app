@@ -1,10 +1,12 @@
 package com.demirelenes.bankingapp.customer.service;
 
+import com.demirelenes.bankingapp.account.entity.Account;
 import com.demirelenes.bankingapp.customer.entity.Customer;
 import com.demirelenes.bankingapp.customer.repository.CustomerRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class CustomerService implements ICustomerService {
@@ -28,6 +30,11 @@ public class CustomerService implements ICustomerService {
     @Override
     public Customer getCustomerById(Long id) {
         return customerRepository.findById(id).get(); // Exception will be added
+    }
+
+    @Override
+    public Set<Account> getAccountsOfCustomer(Long id) {
+        return getCustomerById(id).getAccounts();
     }
 
     @Override

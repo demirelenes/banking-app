@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface IAccountService {
 
-    Account createAccount(Account account);
+    Account createAccount(Account account, Long customerId);
 
     List<Account> getAllAccounts();
 

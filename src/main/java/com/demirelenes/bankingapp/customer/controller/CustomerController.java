@@ -48,7 +48,7 @@ public class CustomerController {
 
     @GetMapping("/{id}/accounts")
     public Set<AccountResponseDTO> getAccountsOfCustomer(@PathVariable("id") Long id) {
-        Set<Account> accounts = customerService.getCustomerById(id).getAccounts();
+        Set<Account> accounts = customerService.getAccountsOfCustomer(id);
         return accounts.stream()
                 .map(account -> mapper.map(account, AccountResponseDTO.class))
                 .collect(Collectors.toSet());

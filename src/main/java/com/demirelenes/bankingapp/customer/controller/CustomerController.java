@@ -35,8 +35,7 @@ public class CustomerController {
     @GetMapping
     public List<CustomerResponseDTO> getAllCustomers() {
         List<Customer> customers = customerService.getAllCustomers();
-        return customers
-                .stream()
+        return customers.stream()
                 .map(customer -> mapper.map(customer, CustomerResponseDTO.class))
                 .collect(Collectors.toList());
     }
@@ -50,8 +49,7 @@ public class CustomerController {
     @GetMapping("/{id}/accounts")
     public Set<AccountResponseDTO> getAccountsOfCustomer(@PathVariable("id") Long id) {
         Set<Account> accounts = customerService.getCustomerById(id).getAccounts();
-        return accounts
-                .stream()
+        return accounts.stream()
                 .map(account -> mapper.map(account, AccountResponseDTO.class))
                 .collect(Collectors.toSet());
     }

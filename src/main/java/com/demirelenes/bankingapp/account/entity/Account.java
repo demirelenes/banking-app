@@ -1,6 +1,6 @@
 package com.demirelenes.bankingapp.account.entity;
 
-import com.demirelenes.bankingapp.currency.CurrencyType;
+import com.demirelenes.bankingapp.currency.controller.model.CurrencyType;
 import com.demirelenes.bankingapp.customer.entity.Customer;
 import com.demirelenes.bankingapp.transaction.entity.Transaction;
 import jakarta.persistence.*;

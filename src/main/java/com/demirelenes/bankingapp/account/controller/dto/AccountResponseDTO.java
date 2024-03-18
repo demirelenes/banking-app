@@ -1,6 +1,6 @@
 package com.demirelenes.bankingapp.account.controller.dto;
 
-import com.demirelenes.bankingapp.currency.controller.model.CurrencyType;
+import com.demirelenes.bankingapp.currency.model.CurrencyType;
 import com.demirelenes.bankingapp.transaction.entity.Transaction;
 import lombok.Data;
 

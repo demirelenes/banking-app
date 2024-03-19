@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 public class AccountController {
 
     private final IAccountService accountService;
-
     private final ModelMapper mapper;
 
     public AccountController(IAccountService accountService, ModelMapper mapper) {

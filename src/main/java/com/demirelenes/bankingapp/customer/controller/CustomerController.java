@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 public class CustomerController {
 
     private final ICustomerService customerService;
-
     private final ModelMapper mapper;
 
     public CustomerController(ICustomerService customerService, ModelMapper mapper) {

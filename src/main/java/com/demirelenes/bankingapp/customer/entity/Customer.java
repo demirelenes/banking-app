@@ -4,7 +4,7 @@ import com.demirelenes.bankingapp.account.entity.Account;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Table(name = "CUSTOMER")
@@ -22,5 +22,5 @@ public class Customer {
     private String lastName;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.REMOVE)
-    private Set<Account> accounts;
+    private List<Account> accounts;
 }

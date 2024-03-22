@@ -3,7 +3,7 @@ package com.demirelenes.bankingapp.customer.controller.dto;
 import com.demirelenes.bankingapp.account.controller.dto.AccountResponseDTO;
 import lombok.Data;
 
-import java.util.Set;
+import java.util.List;
 
 @Data
 public class CustomerResponseDTO {
@@ -14,5 +14,5 @@ public class CustomerResponseDTO {
 
     private String lastName;
 
-    private Set<AccountResponseDTO> accounts;
+    private List<AccountResponseDTO> accounts;
 }

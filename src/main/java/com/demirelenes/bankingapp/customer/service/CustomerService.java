@@ -6,7 +6,6 @@ import com.demirelenes.bankingapp.customer.repository.CustomerRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class CustomerService implements ICustomerService {
@@ -33,7 +32,7 @@ public class CustomerService implements ICustomerService {
     }
 
     @Override
-    public Set<Account> getAccountsOfCustomer(Long id) {
+    public List<Account> getAccountsOfCustomer(Long id) {
         return getCustomerById(id).getAccounts();
     }
 

@@ -9,7 +9,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
@@ -46,11 +45,11 @@ public class CustomerController {
     }
 
     @GetMapping("/{id}/accounts")
-    public Set<AccountResponseDTO> getAccountsOfCustomer(@PathVariable("id") Long id) {
-        Set<Account> accounts = customerService.getAccountsOfCustomer(id);
+    public List<AccountResponseDTO> getAccountsOfCustomer(@PathVariable("id") Long id) {
+        List<Account> accounts = customerService.getAccountsOfCustomer(id);
         return accounts.stream()
                 .map(account -> mapper.map(account, AccountResponseDTO.class))
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
     }
 
     @DeleteMapping("/{id}")

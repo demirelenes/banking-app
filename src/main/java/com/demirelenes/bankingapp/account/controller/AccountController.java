@@ -8,7 +8,6 @@ import com.demirelenes.bankingapp.transaction.entity.Transaction;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,7 +25,8 @@ public class AccountController {
 
     @PostMapping
     public AccountResponseDTO createAccount(@RequestBody AccountRequestDTO newAccount) {
-        Account accountEntity = mapper.map(newAccount, Account.class);
+        Account accountEntity = new Account();
+        accountEntity.setType(newAccount.getType());
         Account createdAccount = accountService.createAccount(accountEntity, newAccount.getCustomerId());
         return mapper.map(createdAccount, AccountResponseDTO.class);
     }

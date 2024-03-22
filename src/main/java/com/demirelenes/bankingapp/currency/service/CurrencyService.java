@@ -60,6 +60,6 @@ public class CurrencyService implements ICurrencyService {
     private synchronized void refreshCache() throws IOException, ParserConfigurationException, SAXException {
         var parsedCurrencies = parser.parse(EXCHANGE_RATE_API.openStream());
         lastAccessTime = LocalDateTime.now();
-        currencies = reader.read(parsedCurrencies);
+        currencies = (List<Currency>) reader.read(parsedCurrencies);
     }
 }

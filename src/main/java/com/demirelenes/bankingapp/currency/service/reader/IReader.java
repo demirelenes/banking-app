@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface IReader<T> {
 
-    List<T> read(Document source);
+    List<? extends T> read(Document source);
 }

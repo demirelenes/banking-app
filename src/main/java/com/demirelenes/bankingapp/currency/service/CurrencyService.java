@@ -9,6 +9,7 @@ import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -29,6 +30,8 @@ public class CurrencyService implements ICurrencyService {
     private final IReader<Currency> reader;
     private final IParser parser;
 
+    private final Currency TRY = new Currency(CurrencyType.TRY, "TURKISH LIRA", BigDecimal.ONE, BigDecimal.ONE);
+
     public CurrencyService(IReader<Currency> reader, IParser parser) throws MalformedURLException, URISyntaxException {
         this.reader = reader;
         this.parser = parser;
@@ -36,17 +39,14 @@ public class CurrencyService implements ICurrencyService {
 
     @Override
     public List<Currency> getCurrencies() throws IOException, ParserConfigurationException, SAXException {
-        if (!isCacheValid()) {
-            refreshCache();
-        }
+        if (!isCacheValid()) refreshCache();
         return currencies;
     }
 
     @Override
     public Currency getCurrencyByCode(CurrencyType code) throws IOException, ParserConfigurationException, SAXException {
-        if (!isCacheValid()) {
-            refreshCache();
-        }
+        if (!isCacheValid()) refreshCache();
+        if (code == CurrencyType.TRY) return TRY;
         return currencies.stream()
                 .filter(c -> c.getCode().equals(code))
                 .findFirst()

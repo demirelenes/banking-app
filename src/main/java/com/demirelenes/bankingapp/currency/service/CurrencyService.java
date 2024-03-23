@@ -10,6 +10,7 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -51,6 +52,19 @@ public class CurrencyService implements ICurrencyService {
                 .filter(c -> c.getCode().equals(code))
                 .findFirst()
                 .get(); // Exception will be added;
+    }
+
+    @Override
+    public BigDecimal getExchangeRate(CurrencyType sourceType, CurrencyType destinationType) throws IOException, ParserConfigurationException, SAXException {
+        if (sourceType == CurrencyType.TRY) {
+            Currency currency = getCurrencyByCode(destinationType);
+            return BigDecimal.ONE.divide(currency.getSellingRate(), RoundingMode.HALF_EVEN);
+        } else if (destinationType == CurrencyType.TRY) {
+            Currency currency = getCurrencyByCode(sourceType);
+            return currency.getBuyingRate();
+        } else {
+            throw new RuntimeException(); // Exception will be modified
+        }
     }
 
     private synchronized boolean isCacheValid() {

@@ -1,7 +1,7 @@
 package com.demirelenes.bankingapp.account.controller.dto;
 
 import com.demirelenes.bankingapp.currency.model.CurrencyType;
-import com.demirelenes.bankingapp.transaction.entity.Transaction;
+import com.demirelenes.bankingapp.transaction.controller.dto.TransactionResponseDTO;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -18,5 +18,5 @@ public class AccountResponseDTO {
 
     private Long customerId;
 
-    private List<Transaction> transactions;
+    private List<TransactionResponseDTO> transactions;
 }

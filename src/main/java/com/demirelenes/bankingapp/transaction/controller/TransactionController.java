@@ -9,7 +9,10 @@ import com.demirelenes.bankingapp.transaction.entity.Transfer;
 import com.demirelenes.bankingapp.transaction.service.ITransactionService;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,21 +29,24 @@ public class TransactionController {
     }
 
     @PostMapping("/atm")
-    public TransactionResponseDTO deposit(@RequestBody ATMTransactionDTO newTransaction) {
-        ATMTransaction transactionEntity = mapper.map(newTransaction, ATMTransaction.class);
-        Transaction createdTransaction = transactionService.deposit(transactionEntity);
+    public TransactionResponseDTO processAtmTransaction(@RequestBody ATMTransactionDTO newTransaction) {
+        var transactionEntity = new ATMTransaction();
+        transactionEntity.setIsDeposit(newTransaction.getIsDeposit());
+        transactionEntity.setAmount(newTransaction.getAmount());
+        Transaction createdTransaction = transactionService.processAtmTransaction(transactionEntity, newTransaction.getSourceAccountId());
         return mapper.map(createdTransaction, TransactionResponseDTO.class);
     }
 
     @PostMapping("/transfer")
-    public TransactionResponseDTO makeTransfer(@RequestBody TransferDTO newTransfer) {
-        Transfer transferEntity = mapper.map(newTransfer, Transfer.class);
-        Transaction createdTransaction = transactionService.makeTransfer(transferEntity);
+    public TransactionResponseDTO makeTransfer(@RequestBody TransferDTO newTransfer) throws IOException, ParserConfigurationException, SAXException {
+        var transferEntity = new Transfer();
+        transferEntity.setAmount(newTransfer.getAmount());
+        Transaction createdTransaction = transactionService.makeTransfer(transferEntity, newTransfer.getSourceAccountId(), newTransfer.getDestinationAccountId());
         return mapper.map(createdTransaction, TransactionResponseDTO.class);
     }
 
     @GetMapping
-    public List<TransactionResponseDTO> getAllTransfers() {
+    public List<TransactionResponseDTO> getAllTransactions() {
         List<Transaction> transactions = transactionService.getAllTransactions();
         return transactions.stream()
                 .map(t -> mapper.map(t, TransactionResponseDTO.class))

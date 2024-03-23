@@ -55,7 +55,7 @@ public class AccountController {
 
     @PatchMapping("/{id}")
     public AccountResponseDTO updateBalanceOfAccount(@PathVariable("id") Long id, @RequestBody BalanceDTO update) {
-        Account updatedAccount = accountService.updateBalanceOfAccountById(id, update.getAmount());
+        Account updatedAccount = accountService.updateBalanceOfAccount(id, update.getAmount());
         return mapper.map(updatedAccount, AccountResponseDTO.class);
     }
 

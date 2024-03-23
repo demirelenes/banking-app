@@ -56,17 +56,12 @@ public class AccountService implements IAccountService {
     }
 
     @Override
-    public Account updateBalanceOfAccount(Account account, BigDecimal amount) {
+    public Account updateBalanceOfAccount(Long id, BigDecimal amount) {
+        Account account = getAccountById(id);
         BigDecimal newBalance = account.getBalance().add(amount);
         if (newBalance.compareTo(BigDecimal.ZERO) < 0); // Exception will be added
         account.setBalance(newBalance);
         return accountRepository.save(account);
-    }
-
-    @Override
-    public Account updateBalanceOfAccountById(Long id, BigDecimal amount) {
-        Account account = getAccountById(id);
-        return updateBalanceOfAccount(account, amount);
     }
 
     @Override

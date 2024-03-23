@@ -16,9 +16,7 @@ public interface IAccountService {
 
     List<Transaction> getTransactionsOfAccount(Long id);
 
-    Account updateBalanceOfAccount(Account id, BigDecimal amount);
-
-    Account updateBalanceOfAccountById(Long id, BigDecimal amount);
+    Account updateBalanceOfAccount(Long id, BigDecimal amount);
 
     void deleteAccountById(Long id);
 }

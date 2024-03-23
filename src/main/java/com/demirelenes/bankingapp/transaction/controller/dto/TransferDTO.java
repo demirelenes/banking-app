@@ -7,9 +7,9 @@ import java.math.BigDecimal;
 @Data
 public class TransferDTO {
 
-    private Long sourceAccount;
+    private Long sourceAccountId;
 
-    private Long destinationAccount;
+    private Long destinationAccountId;
 
     private BigDecimal amount;
 }

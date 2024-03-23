@@ -9,6 +9,7 @@ import java.util.List;
 @Entity
 @Table(name = "CUSTOMER")
 @Data
+@ToString(exclude = {"accounts"})
 public class Customer {
     @Id
     @GeneratedValue

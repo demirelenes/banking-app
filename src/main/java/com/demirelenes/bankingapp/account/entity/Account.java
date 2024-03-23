@@ -5,6 +5,7 @@ import com.demirelenes.bankingapp.customer.entity.Customer;
 import com.demirelenes.bankingapp.transaction.entity.Transaction;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.List;
 @Entity
 @Table(name = "ACCOUNT")
 @Data
+@ToString(exclude = {"transactions"})
 public class Account {
     @Id
     @GeneratedValue

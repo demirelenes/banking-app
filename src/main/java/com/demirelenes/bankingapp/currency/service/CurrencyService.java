@@ -4,6 +4,8 @@ import com.demirelenes.bankingapp.currency.model.Currency;
 import com.demirelenes.bankingapp.currency.model.CurrencyType;
 import com.demirelenes.bankingapp.currency.service.parser.IParser;
 import com.demirelenes.bankingapp.currency.service.reader.IReader;
+import com.demirelenes.bankingapp.exception.CurrencyMismatchException;
+import com.demirelenes.bankingapp.exception.InvalidCurrencyException;
 import org.springframework.stereotype.Service;
 import org.xml.sax.SAXException;
 
@@ -40,22 +42,24 @@ public class CurrencyService implements ICurrencyService {
 
     @Override
     public List<Currency> getCurrencies() throws IOException, ParserConfigurationException, SAXException {
-        if (!isCacheValid()) refreshCache();
+        if (invalidCache()) refreshCache();
         return currencies;
     }
 
     @Override
     public Currency getCurrencyByCode(CurrencyType code) throws IOException, ParserConfigurationException, SAXException {
-        if (!isCacheValid()) refreshCache();
+        if (code == null) throw new IllegalArgumentException("Currency code cannot be null!");
+        if (invalidCache()) refreshCache();
         if (code == CurrencyType.TRY) return TRY;
         return currencies.stream()
                 .filter(c -> c.getCode().equals(code))
                 .findFirst()
-                .get(); // Exception will be added;
+                .orElseThrow(() -> new InvalidCurrencyException(code + " is not a valid currency type!"));
     }
 
     @Override
     public BigDecimal getExchangeRate(CurrencyType sourceType, CurrencyType destinationType) throws IOException, ParserConfigurationException, SAXException {
+        if (sourceType == null || destinationType == null) throw new IllegalArgumentException("Currency type cannot be null!");
         if (sourceType == CurrencyType.TRY) {
             Currency currency = getCurrencyByCode(destinationType);
             return BigDecimal.ONE.divide(currency.getSellingRate(), RoundingMode.HALF_EVEN);
@@ -63,14 +67,15 @@ public class CurrencyService implements ICurrencyService {
             Currency currency = getCurrencyByCode(sourceType);
             return currency.getBuyingRate();
         } else {
-            throw new RuntimeException(); // Exception will be modified
+            throw new CurrencyMismatchException();
         }
     }
 
-    private synchronized boolean isCacheValid() {
-        return lastAccessTime != null && currencies != null && Duration.between(lastAccessTime, LocalDateTime.now()).toMinutes() < CACHE_DURATION.toMinutes();
+    private synchronized boolean invalidCache() {
+        return lastAccessTime == null || currencies == null || Duration.between(lastAccessTime, LocalDateTime.now()).toMinutes() >= CACHE_DURATION.toMinutes();
     }
 
+    @SuppressWarnings("unchecked")
     private synchronized void refreshCache() throws IOException, ParserConfigurationException, SAXException {
         var parsedCurrencies = parser.parse(EXCHANGE_RATE_API.openStream());
         lastAccessTime = LocalDateTime.now();

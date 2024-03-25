@@ -61,7 +61,7 @@ public class TransactionService implements ITransactionService {
 
     @Override
     public Transaction makeTransfer(Transfer transfer, Long sourceId, Long destinationId) throws IOException, ParserConfigurationException, SAXException {
-        if (sourceId.equals(destinationId)); // Exception will be thrown
+        if (sourceId.equals(destinationId)) throw new IllegalArgumentException("Source and destination accounts cannot be same!");
 
         Account sourceAccount = accountService.getAccountById(sourceId);
         Account destinationAccount = accountService.getAccountById(destinationId);

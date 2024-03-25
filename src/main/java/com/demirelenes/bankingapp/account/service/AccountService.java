@@ -60,7 +60,8 @@ public class AccountService implements IAccountService {
     public Account updateBalanceOfAccount(Long id, BigDecimal amount) {
         Account account = getAccountById(id);
         BigDecimal newBalance = account.getBalance().add(amount);
-        if (newBalance.compareTo(BigDecimal.ZERO) < 0); // Exception will be added
+        if (newBalance.compareTo(BigDecimal.ZERO) < 0) throw new IllegalArgumentException("Balance cannot be negative, " +
+                "Balance = " + account.getBalance() + "Update amount = " + amount);
         account.setBalance(newBalance);
         return accountRepository.save(account);
     }

@@ -3,6 +3,7 @@ package com.demirelenes.bankingapp.transaction.service;
 import com.demirelenes.bankingapp.account.entity.Account;
 import com.demirelenes.bankingapp.account.service.IAccountService;
 import com.demirelenes.bankingapp.currency.service.ICurrencyService;
+import com.demirelenes.bankingapp.exception.NotFoundException;
 import com.demirelenes.bankingapp.transaction.TransactionType;
 import com.demirelenes.bankingapp.transaction.entity.ATMTransaction;
 import com.demirelenes.bankingapp.transaction.entity.Transaction;
@@ -93,6 +94,6 @@ public class TransactionService implements ITransactionService {
 
     @Override
     public Transaction getTransactionById(Long id) {
-        return transactionRepository.findById(id).get(); // Exception will be added
+        return transactionRepository.findById(id).orElseThrow(() -> new NotFoundException("Transaction with ID = " + id + " not found!"));
     }
 }

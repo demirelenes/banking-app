@@ -4,6 +4,7 @@ import com.demirelenes.bankingapp.account.entity.Account;
 import com.demirelenes.bankingapp.account.repository.AccountRepository;
 import com.demirelenes.bankingapp.customer.entity.Customer;
 import com.demirelenes.bankingapp.customer.service.ICustomerService;
+import com.demirelenes.bankingapp.exception.NotFoundException;
 import com.demirelenes.bankingapp.transaction.entity.Transaction;
 import com.demirelenes.bankingapp.transaction.entity.Transfer;
 import com.demirelenes.bankingapp.transaction.repository.TransferRepository;
@@ -42,7 +43,7 @@ public class AccountService implements IAccountService {
 
     @Override
     public Account getAccountById(Long id) {
-        return accountRepository.findById(id).get(); // Exception will be added
+        return accountRepository.findById(id).orElseThrow(() -> new NotFoundException("Account with ID = " + id + " not found!"));
     }
 
     @Override

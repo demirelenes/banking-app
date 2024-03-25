@@ -3,7 +3,6 @@ package com.demirelenes.bankingapp.customer.service;
 import com.demirelenes.bankingapp.account.entity.Account;
 import com.demirelenes.bankingapp.customer.entity.Customer;
 import com.demirelenes.bankingapp.customer.repository.CustomerRepository;
-import com.demirelenes.bankingapp.exception.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,7 +28,7 @@ public class CustomerService implements ICustomerService {
 
     @Override
     public Customer getCustomerById(Long id) {
-        return customerRepository.findById(id).orElseThrow(() -> new NotFoundException("Customer with id = " + id + " is not found!"));
+        return customerRepository.findById(id).get(); // Exception will be added
     }
 
     @Override

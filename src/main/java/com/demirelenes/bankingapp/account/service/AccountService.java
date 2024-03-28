@@ -9,6 +9,8 @@ import com.demirelenes.bankingapp.transaction.entity.Transaction;
 import com.demirelenes.bankingapp.transaction.entity.Transfer;
 import com.demirelenes.bankingapp.transaction.repository.TransferRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Comparator;
@@ -29,6 +31,7 @@ public class AccountService implements IAccountService {
     }
 
     @Override
+    @Transactional
     public Account createAccount(Account account, Long customerId) {
         account.setBalance(BigDecimal.ZERO);
         Customer customer = customerService.getCustomerById(customerId);
@@ -57,6 +60,7 @@ public class AccountService implements IAccountService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.MANDATORY, timeout = 10)
     public Account updateBalanceOfAccount(Long id, BigDecimal amount) {
         Account account = getAccountById(id);
         BigDecimal newBalance = account.getBalance().add(amount);

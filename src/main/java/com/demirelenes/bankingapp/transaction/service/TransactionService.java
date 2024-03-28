@@ -12,6 +12,7 @@ import com.demirelenes.bankingapp.transaction.repository.ATMTransactionRepositor
 import com.demirelenes.bankingapp.transaction.repository.TransactionRepository;
 import com.demirelenes.bankingapp.transaction.repository.TransferRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -42,6 +43,7 @@ public class TransactionService implements ITransactionService {
     }
 
     @Override
+    @Transactional(timeout = 15)
     public Transaction processAtmTransaction(ATMTransaction atmTransaction, Long accountId) {
         Account account = accountService.getAccountById(accountId);
         atmTransaction.setSourceAccount(account);
@@ -60,6 +62,7 @@ public class TransactionService implements ITransactionService {
     }
 
     @Override
+    @Transactional(rollbackFor = {IOException.class, ParserConfigurationException.class, SAXException.class}, timeout = 20)
     public Transaction makeTransfer(Transfer transfer, Long sourceId, Long destinationId) throws IOException, ParserConfigurationException, SAXException {
         if (sourceId.equals(destinationId)) throw new IllegalArgumentException("Source and destination accounts cannot be same!");
 

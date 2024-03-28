@@ -5,6 +5,7 @@ import com.demirelenes.bankingapp.customer.entity.Customer;
 import com.demirelenes.bankingapp.customer.repository.CustomerRepository;
 import com.demirelenes.bankingapp.exception.NotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -18,6 +19,7 @@ public class CustomerService implements ICustomerService {
     }
 
     @Override
+    @Transactional
     public Customer createCustomer(Customer customer) {
         return customerRepository.save(customer);
     }

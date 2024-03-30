@@ -11,6 +11,7 @@ import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,7 +35,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(body);
     }
 
-    @ExceptionHandler({IOException.class, SAXException.class, ParserConfigurationException.class})
+    @ExceptionHandler({IOException.class, SAXException.class, ParserConfigurationException.class, URISyntaxException.class})
     public ResponseEntity<Object> handleIOException(Exception ex) {
         var body = httpBodyCreator(ex);
         return ResponseEntity.badRequest().body(body);

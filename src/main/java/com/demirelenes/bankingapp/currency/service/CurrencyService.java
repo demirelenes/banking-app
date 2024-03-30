@@ -6,6 +6,7 @@ import com.demirelenes.bankingapp.currency.service.parser.IParser;
 import com.demirelenes.bankingapp.currency.service.reader.IReader;
 import com.demirelenes.bankingapp.exception.CurrencyMismatchException;
 import com.demirelenes.bankingapp.exception.InvalidCurrencyException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.xml.sax.SAXException;
 
@@ -24,7 +25,7 @@ import java.util.List;
 @Service
 public class CurrencyService implements ICurrencyService {
 
-    private final URL EXCHANGE_RATE_API = new URI("https://www.tcmb.gov.tr/kurlar/today.xml").toURL();
+    private final URL EXCHANGE_RATE_API;
 
     private volatile List<Currency> currencies;
     private volatile LocalDateTime lastAccessTime;
@@ -35,7 +36,8 @@ public class CurrencyService implements ICurrencyService {
 
     private final Currency TRY = new Currency(CurrencyType.TRY, "TURKISH LIRA", BigDecimal.ONE, BigDecimal.ONE);
 
-    public CurrencyService(IReader<Currency> reader, IParser parser) throws MalformedURLException, URISyntaxException {
+    public CurrencyService(@Value("${exchange.rates.api.url}") String urlString, IReader<Currency> reader, IParser parser) throws MalformedURLException, URISyntaxException {
+        EXCHANGE_RATE_API = new URI(urlString).toURL();
         this.reader = reader;
         this.parser = parser;
     }

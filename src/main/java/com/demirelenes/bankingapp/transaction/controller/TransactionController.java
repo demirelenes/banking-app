@@ -7,6 +7,7 @@ import com.demirelenes.bankingapp.transaction.entity.ATMTransaction;
 import com.demirelenes.bankingapp.transaction.entity.Transaction;
 import com.demirelenes.bankingapp.transaction.entity.Transfer;
 import com.demirelenes.bankingapp.transaction.service.ITransactionService;
+import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
 import org.xml.sax.SAXException;
@@ -29,7 +30,7 @@ public class TransactionController {
     }
 
     @PostMapping("/atm")
-    public TransactionResponseDTO processAtmTransaction(@RequestBody ATMTransactionDTO newTransaction) {
+    public TransactionResponseDTO processAtmTransaction(@Valid @RequestBody ATMTransactionDTO newTransaction) {
         var transactionEntity = new ATMTransaction();
         transactionEntity.setIsDeposit(newTransaction.getIsDeposit());
         transactionEntity.setAmount(newTransaction.getAmount());
@@ -38,7 +39,7 @@ public class TransactionController {
     }
 
     @PostMapping("/transfer")
-    public TransactionResponseDTO makeTransfer(@RequestBody TransferDTO newTransfer) throws IOException, ParserConfigurationException, SAXException {
+    public TransactionResponseDTO makeTransfer(@Valid @RequestBody TransferDTO newTransfer) throws IOException, ParserConfigurationException, SAXException {
         var transferEntity = new Transfer();
         transferEntity.setAmount(newTransfer.getAmount());
         Transaction createdTransaction = transactionService.makeTransfer(transferEntity, newTransfer.getSourceAccountId(), newTransfer.getDestinationAccountId());

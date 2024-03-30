@@ -5,6 +5,7 @@ import com.demirelenes.bankingapp.account.entity.Account;
 import com.demirelenes.bankingapp.account.service.IAccountService;
 import com.demirelenes.bankingapp.transaction.controller.dto.TransactionResponseDTO;
 import com.demirelenes.bankingapp.transaction.entity.Transaction;
+import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +25,7 @@ public class AccountController {
     }
 
     @PostMapping
-    public AccountResponseDTO createAccount(@RequestBody AccountRequestDTO newAccount) {
+    public AccountResponseDTO createAccount(@Valid @RequestBody AccountRequestDTO newAccount) {
         Account accountEntity = new Account();
         accountEntity.setType(newAccount.getType());
         Account createdAccount = accountService.createAccount(accountEntity, newAccount.getCustomerId());
@@ -54,7 +55,7 @@ public class AccountController {
     }
 
     @PatchMapping("/{id}")
-    public AccountResponseDTO updateBalanceOfAccount(@PathVariable("id") Long id, @RequestBody BalanceDTO update) {
+    public AccountResponseDTO updateBalanceOfAccount(@PathVariable("id") Long id, @Valid @RequestBody BalanceDTO update) {
         Account updatedAccount = accountService.updateBalanceOfAccount(id, update.getAmount());
         return mapper.map(updatedAccount, AccountResponseDTO.class);
     }

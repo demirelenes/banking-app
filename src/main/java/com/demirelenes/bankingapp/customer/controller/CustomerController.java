@@ -5,6 +5,7 @@ import com.demirelenes.bankingapp.account.entity.Account;
 import com.demirelenes.bankingapp.customer.controller.dto.*;
 import com.demirelenes.bankingapp.customer.entity.Customer;
 import com.demirelenes.bankingapp.customer.service.ICustomerService;
+import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +25,7 @@ public class CustomerController {
     }
 
     @PostMapping
-    public CustomerResponseDTO createCustomer(@RequestBody CustomerRequestDTO newCustomer) {
+    public CustomerResponseDTO createCustomer(@Valid @RequestBody CustomerRequestDTO newCustomer) {
         Customer customerEntity = mapper.map(newCustomer, Customer.class);
         Customer createdCustomer = customerService.createCustomer(customerEntity);
         return mapper.map(createdCustomer, CustomerResponseDTO.class);
